@@ -96,8 +96,17 @@ function processBotResponse(text) {
             options = ["Quero um Site/Loja", "Sistema/App Complexo", "Automação & I.A."];
         }
         else {
-            reply = "Sou um robô focado em soluções YK. Posso te mostrar nossos serviços de Desenvolvimento Web, Sistemas/Apps ou Automação com IA. Qual prefere?";
-            options = ["Web Rápida", "Sistemas/Apps", "Automação IA"];
+            reply = `
+                Aqui acaba meu trabalho!<br>
+                Para casos específicos ou orçamentos personalizados, fale com nosso especialista humano:
+                <br><br>
+                <a href="https://wa.me/5548985036092?text=Olá YK software house." 
+                   target="_blank" 
+                   class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-transform hover:scale-105 shadow-md no-underline">
+                    <i class="fab fa-whatsapp mr-2"></i> Falar com Humano
+                </a>
+            `;
+            options = ["Voltar ao Menu", "Ver Serviços"];
         }
 
         addBotMessage(reply);
