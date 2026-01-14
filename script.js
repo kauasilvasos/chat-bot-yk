@@ -77,45 +77,76 @@ function processBotResponse(text) {
             showServiceCards(catalogo.web);
             options = ["Voltar ao início", "Falar no WhatsApp"];
         } 
+        // 2. SISTEMAS / APPS
         else if (lowerText.includes("sistema") || lowerText.includes("app") || lowerText.includes("saas") || lowerText.includes("dashboard")) {
             reply = "Entendido. Você precisa de robustez. Trabalhamos com React, Node, Python e SQL. Veja nossas soluções de Sistemas e SaaS:";
             showServiceCards(catalogo.sistemas);
             options = ["Voltar ao início", "Orçamento Customizado"];
         } 
+        // 3. AUTOMAÇÃO / IA
         else if (lowerText.includes("automa") || lowerText.includes("ia") || lowerText.includes("bot") || lowerText.includes("robô")) {
             reply = "Excelente escolha. Automação é o que gera lucro real. Aqui está o que meus 'irmãos' robôs podem fazer por você:";
             showServiceCards(catalogo.automacao);
             options = ["Quero um Chatbot", "Voltar ao início"];
         }
+        // 4. PREÇO / VALOR
         else if (lowerText.includes("preço") || lowerText.includes("valor") || lowerText.includes("quanto")) {
-            reply = "Nossos preços são ultra competitivos para entrega High-End. Landing Pages a partir de R$450 e Sistemas Complexos a partir de R$2k. Selecione uma categoria para ver detalhes.";
+            reply = "Nossos preços são ultra competitivos para entrega High-End. Landing Pages a partir de R$350 e Sistemas a partir de R$2k. Selecione uma categoria acima para ver detalhes.";
             options = ["Ver Sites", "Ver Sistemas", "Ver Automação"];
         }
+        // 5. NOVO: PORTFÓLIO (Correção solicitada)
+        else if (lowerText.includes("portfólio") || lowerText.includes("portfolio")) {
+            reply = `
+                Tenho orgulho do nosso trabalho! 🚀<br>
+                Você pode conferir nossos projetos recentes e estudos de caso no link abaixo:
+                <br><br>
+                <a href="https://kauasilvasos.github.io/portifolio-2026/" 
+                   target="_blank" 
+                   class="inline-flex items-center bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded transition-transform hover:scale-105 shadow-md no-underline">
+                    <i class="fas fa-external-link-alt mr-2"></i> Acessar Portfólio
+                </a>
+            `;
+            options = ["Voltar ao início", "Falar no WhatsApp"];
+        }
+        // 6. NOVO: ORÇAMENTO (Para não cair no erro quando clicar no botão)
+        else if (lowerText.includes("orçamento")) {
+            reply = `
+                Para orçamentos personalizados, precisamos entender a fundo sua ideia. 💡<br>
+                Vamos conversar diretamente pelo WhatsApp?
+                <br><br>
+                <a href="https://wa.me/5548985036092?text=Olá, gostaria de um orçamento para meu projeto." 
+                   target="_blank" 
+                   class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-transform hover:scale-105 shadow-md no-underline">
+                    <i class="fab fa-whatsapp mr-2"></i> Solicitar Orçamento
+                </a>
+            `;
+            options = ["Voltar ao início"];
+        }
+        // 7. VOLTAR / INÍCIO
         else if (lowerText.includes("voltar") || lowerText.includes("inicio")) {
             reply = "Reiniciando... O que você busca hoje?";
-            options = ["Quero um Site/Loja", "Sistema/App Complexo", "Automação & I.A."];
+            options = ["Quero um Site/Loja", "Sistema/App Complexo", "Automação & I.A.", "Ver Portfólio"];
         }
         else {
             reply = `
-                Isso não está no meu banco de dados!<br>
-                Para casos específicos ou orçamentos personalizados, fale com nosso especialista humano:
+                Isso sai um pouco da minha programação padrão. 😅<br>
+                Mas nosso especialista humano pode te ajudar agora mesmo:
                 <br><br>
-                <a href="https://wa.me/5548985036092?text=Olá YK software house." 
+                <a href="https://wa.me/5548985036092?text=Olá YK, tenho uma dúvida específica." 
                    target="_blank" 
                    class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-transform hover:scale-105 shadow-md no-underline">
                     <i class="fab fa-whatsapp mr-2"></i> Falar com Humano
                 </a>
             `;
-            options = ["Voltar ao Menu", "Ver Serviços"];
+            options = ["Voltar ao Menu", "Ver Portfólio"];
         }
 
         addBotMessage(reply);
         setQuickReplies(options);
 
-    }, 1000); // Delay artificial de 1s para parecer humano
+    }, 1000);
 }
 
-// --- FUNÇÕES DE UI ---
 
 function addUserMessage(text) {
     const div = document.createElement('div');
