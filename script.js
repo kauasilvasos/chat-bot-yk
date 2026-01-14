@@ -1,0 +1,226 @@
+// --- BANCO DE DADOS DE SERVIÇOS (Extenso conforme solicitado) ---
+const catalogo = {
+    web: [
+        { nome: "Landing Page", tech: "[HTML5, Tailwind, Next.js]", desc: "Página única, ultrarápida, pixel instalado, botão sticky.", preco: "R$ 350+", tempo: "Algumas horas" },
+        { nome: "Site Institucional", tech: "[WordPress ou Next.js]", desc: "Home, Sobre, Serviços, Contato. Painel administrativo.", preco: "R$ 600+", tempo: "1 dia" },
+        { nome: "Loja WooCommerce", tech: "[WordPress + WooCommerce]", desc: "Loja própria sem mensalidade, PagSeguro/Mercado Pago.", preco: "R$ 900+", tempo: "1 dia" }
+    ],
+    sistemas: [
+        { nome: "Micro-SaaS", tech: "[React, Node.js, Supabase]", desc: "Login, dashboard, funcionalidade core e pagamentos (Stripe).", preco: "R$ 2k+", tempo: "1 semana" },
+        { nome: "Plataforma Educacional", tech: "[Next.js, Video Player]", desc: "Área de membros, quiz, certificados automáticos.", preco: "R$ 2k+", tempo: "1 semana" },
+        { nome: "Dashboard Financeiro", tech: "[React, Python, SQL]", desc: "Gráficos, relatórios PDF/Excel, níveis de acesso.", preco: "R$ 1.2k+", tempo: "1 semana" },
+        { nome: "Hub de Integração", tech: "[Node.js, Webhooks]", desc: "Conexão APIs (Bling ↔ MktPlace ↔ Site) em tempo real.", preco: "R$ 1.0k+", tempo: "1 semana" },
+        { nome: "App Nativo (Mobile)", tech: "[React Native Expo]", desc: "App para agendamento, catálogo e notificações Push.", preco: "R$ 1.0k+", tempo: "1 semana" },
+        { nome: "App Complexo (Uber/Social)", tech: "[React Native + Backend]", desc: "Geolocalização, RPGs simples, Redes Sociais.", preco: "R$ 2k+", tempo: "2 semanas" },
+        { nome: "Migração Web > Mobile", tech: "[React Native]", desc: "Converter site React em App nativo reaproveitando lógica.", preco: "R$ 600-1k", tempo: "3 dias" }
+    ],
+    automacao: [
+        { nome: "Chatbot IA / WhatsApp", tech: "[Python, OpenAI, Gemini]", desc: "Atendente 24/7, filtra leads e agenda reuniões.", preco: "R$ 400+", tempo: "Imediato/Config" },
+        { nome: "Automação RPA", tech: "[Python, Selenium]", desc: "Robôs para varrer sites, extrair dados e preencher planilhas.", preco: "R$ 400+", tempo: "4 dias" },
+        { nome: "Gerador de Conteúdo IA", tech: "[API GPT/Gemini]", desc: "Cria textos, blogs e relatórios personalizados.", preco: "R$ 1.5k+", tempo: "2 dias" }
+    ]
+};
+
+// --- LÓGICA DO CHATBOT ---
+
+const chatBox = document.getElementById('chat-box');
+const userInput = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
+const quickReplies = document.getElementById('quick-replies');
+const infoPanel = document.getElementById('info-panel');
+
+// Som de notificação (opcional)
+// const msgSound = new Audio('path_to_sound.mp3'); 
+
+let step = 0; // Controla o fluxo da conversa
+
+// Inicialização
+window.onload = () => {
+    addBotMessage("Olá! Sou a IA da <strong>YK Software House</strong>.");
+    setTimeout(() => {
+        addBotMessage("Desenvolvemos de Landing Pages rápidas até Sistemas Complexos com I.A.");
+        setTimeout(() => {
+            addBotMessage("Como posso ajudar você hoje?");
+            setQuickReplies(["Quero um Site/Loja", "Sistema/App Complexo", "Automação & I.A.", "Ver Portfólio"]);
+        }, 800);
+    }, 800);
+};
+
+// Enviar mensagem ao clicar ou Enter
+sendBtn.addEventListener('click', handleUserMessage);
+userInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleUserMessage(); });
+
+function handleUserMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
+    
+    addUserMessage(text);
+    userInput.value = '';
+    processBotResponse(text);
+}
+
+// Processamento da resposta (Simulação de IA)
+function processBotResponse(text) {
+    showTyping();
+    
+    // Normaliza texto para facilitar a busca
+    const lowerText = text.toLowerCase();
+    let reply = "";
+    let options = [];
+
+    setTimeout(() => {
+        removeTyping();
+
+        // Lógica simples de decisão baseada em palavras-chave
+        if (lowerText.includes("site") || lowerText.includes("loja") || lowerText.includes("landing") || lowerText.includes("web")) {
+            reply = "Perfeito. Para web, focamos em velocidade e conversão. Aqui estão nossas soluções rápidas:";
+            showServiceCards(catalogo.web);
+            options = ["Voltar ao início", "Falar no WhatsApp"];
+        } 
+        else if (lowerText.includes("sistema") || lowerText.includes("app") || lowerText.includes("saas") || lowerText.includes("dashboard")) {
+            reply = "Entendido. Você precisa de robustez. Trabalhamos com React, Node, Python e SQL. Veja nossas soluções de Sistemas e SaaS:";
+            showServiceCards(catalogo.sistemas);
+            options = ["Voltar ao início", "Orçamento Customizado"];
+        } 
+        else if (lowerText.includes("automa") || lowerText.includes("ia") || lowerText.includes("bot") || lowerText.includes("robô")) {
+            reply = "Excelente escolha. Automação é o que gera lucro real. Aqui está o que meus 'irmãos' robôs podem fazer por você:";
+            showServiceCards(catalogo.automacao);
+            options = ["Quero um Chatbot", "Voltar ao início"];
+        }
+        else if (lowerText.includes("preço") || lowerText.includes("valor") || lowerText.includes("quanto")) {
+            reply = "Nossos preços são ultra competitivos para entrega High-End. Landing Pages a partir de R$450 e Sistemas Complexos a partir de R$2k. Selecione uma categoria para ver detalhes.";
+            options = ["Ver Sites", "Ver Sistemas", "Ver Automação"];
+        }
+        else if (lowerText.includes("voltar") || lowerText.includes("inicio")) {
+            reply = "Reiniciando... O que você busca hoje?";
+            options = ["Quero um Site/Loja", "Sistema/App Complexo", "Automação & I.A."];
+        }
+        else {
+            reply = "Sou um robô focado em soluções YK. Posso te mostrar nossos serviços de Desenvolvimento Web, Sistemas/Apps ou Automação com IA. Qual prefere?";
+            options = ["Web Rápida", "Sistemas/Apps", "Automação IA"];
+        }
+
+        addBotMessage(reply);
+        setQuickReplies(options);
+
+    }, 1000); // Delay artificial de 1s para parecer humano
+}
+
+// --- FUNÇÕES DE UI ---
+
+function addUserMessage(text) {
+    const div = document.createElement('div');
+    div.className = "flex justify-end animate-fade-in";
+    div.innerHTML = `<div class="bg-green-600 text-white px-4 py-2 rounded-l-lg rounded-tr-lg max-w-[80%] shadow-lg">${text}</div>`;
+    chatBox.appendChild(div);
+    scrollToBottom();
+}
+
+function addBotMessage(html) {
+    const div = document.createElement('div');
+    div.className = "flex justify-start animate-fade-in";
+    div.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-2 border border-green-500">
+            <i class="fas fa-robot text-green-400 text-sm"></i>
+        </div>
+        <div class="bg-gray-800 border border-gray-700 text-gray-200 px-4 py-2 rounded-r-lg rounded-tl-lg max-w-[85%] shadow-lg">
+            ${html}
+        </div>
+    `;
+    chatBox.appendChild(div);
+    scrollToBottom();
+}
+
+function showTyping() {
+    const div = document.createElement('div');
+    div.id = "typing-indicator";
+    div.className = "flex justify-start animate-fade-in";
+    div.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-2">
+            <i class="fas fa-robot text-gray-500 text-sm"></i>
+        </div>
+        <div class="bg-gray-800 border border-gray-700 px-4 py-3 rounded-r-lg rounded-tl-lg shadow-lg flex space-x-1">
+            <div class="w-2 h-2 bg-gray-500 rounded-full typing-dot"></div>
+            <div class="w-2 h-2 bg-gray-500 rounded-full typing-dot"></div>
+            <div class="w-2 h-2 bg-gray-500 rounded-full typing-dot"></div>
+        </div>
+    `;
+    chatBox.appendChild(div);
+    scrollToBottom();
+}
+
+function removeTyping() {
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) indicator.remove();
+}
+
+function setQuickReplies(options) {
+    quickReplies.innerHTML = '';
+    options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = "whitespace-nowrap px-4 py-2 bg-gray-700 hover:bg-green-600 border border-gray-600 hover:border-green-500 rounded-full text-sm transition-colors text-white";
+        btn.innerText = opt;
+        btn.onclick = () => {
+            addUserMessage(opt);
+            processBotResponse(opt);
+        };
+        quickReplies.appendChild(btn);
+    });
+}
+
+function showServiceCards(servicesList) {
+    // Atualiza o painel lateral (Desktop)
+    infoPanel.innerHTML = '<h3 class="text-green-400 font-bold mb-4 border-b border-gray-700 pb-2">Catálogo Selecionado:</h3>';
+    
+    // Cria cards dentro do chat também (Mobile/Desktop)
+    const cardsContainer = document.createElement('div');
+    cardsContainer.className = "grid gap-3 mt-2 mb-2";
+
+    servicesList.forEach(item => {
+        // Card HTML
+        const cardHTML = `
+            <div class="bg-gray-900 border border-green-900/50 p-3 rounded hover:border-green-500 transition cursor-pointer group">
+                <div class="flex justify-between items-start">
+                    <h4 class="font-bold text-green-400 group-hover:text-white">${item.nome}</h4>
+                    <span class="text-xs bg-gray-800 px-2 py-1 rounded text-gray-400">${item.tempo}</span>
+                </div>
+                <p class="text-xs text-blue-300 font-mono mt-1 mb-2">${item.tech}</p>
+                <p class="text-sm text-gray-300">${item.desc}</p>
+                <div class="mt-2 text-right">
+                    <span class="font-bold text-white bg-green-700 px-2 py-0.5 rounded text-sm">${item.preco}</span>
+                </div>
+            </div>
+        `;
+
+        // Adiciona ao Chat
+        const chatCardWrapper = document.createElement('div');
+        chatCardWrapper.innerHTML = cardHTML;
+        cardsContainer.appendChild(chatCardWrapper);
+
+        // Adiciona ao Painel Lateral
+        const sideCard = document.createElement('div');
+        sideCard.innerHTML = cardHTML;
+        infoPanel.appendChild(sideCard);
+    });
+
+    // Adiciona o container de cards ao chat
+    const msgDiv = document.createElement('div');
+    msgDiv.className = "flex justify-start w-full";
+    msgDiv.innerHTML = `
+        <div class="w-8 mr-2 flex-shrink-0"></div> <div class="w-full max-w-[90%]">
+            ${cardsContainer.innerHTML}
+        </div>
+    `;
+    chatBox.appendChild(msgDiv);
+    scrollToBottom();
+}
+
+function scrollToBottom() {
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Botão de reinício
+document.getElementById('btn-restart').onclick = () => {
+    chatBox.innerHTML = '';
+    window.onload();
+};
