@@ -97,7 +97,7 @@ function processBotResponse(text) {
         }
         else {
             reply = `
-                Aqui acaba meu trabalho!<br>
+                Isso não está no meu banco de dados!<br>
                 Para casos específicos ou orçamentos personalizados, fale com nosso especialista humano:
                 <br><br>
                 <a href="https://wa.me/5548985036092?text=Olá YK software house." 
