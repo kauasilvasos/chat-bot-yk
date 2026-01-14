@@ -71,6 +71,7 @@ function processBotResponse(text) {
     setTimeout(() => {
         removeTyping();
 
+        
         // Lógica simples de decisão baseada em palavras-chave
         if (lowerText.includes("quero um chatbot") || lowerText.includes("falar no whatsapp") || lowerText.includes("zap")) {
             reply = `
@@ -86,23 +87,31 @@ function processBotResponse(text) {
             options = ["Voltar ao início"];
         }
 
-        // --- 2. MENU DE SERVIÇOS ---
-
-        // SITE / WEB
-        else if (lowerText.includes("site") || lowerText.includes("loja") || lowerText.includes("landing") || lowerText.includes("web")) {
-            reply = "Perfeito. Para web, focamos em velocidade e conversão. Aqui estão nossas soluções rápidas:";
-            showServiceCards(catalogo.web);
-            // Adicionado "Falar no WhatsApp" conforme solicitado
-            options = ["Voltar ao início", "Falar no WhatsApp"];
-        } 
+        else if (lowerText.includes("falar no whatsapp") || lowerText.includes("zap") || lowerText.includes("whatssap") || lowerText.includes("wpp")) {
+            reply = `
+                Claro! Vamos conversar diretamente. 📱<br>
+                Clique abaixo para nos chamar no WhatsApp:
+                <br><br>
+                <a href="https://wa.me/5548985036092?text=Olá, vim pelo site e gostaria de conversar." 
+                   target="_blank" 
+                   class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-transform hover:scale-105 shadow-md no-underline">
+                    <i class="fab fa-whatsapp mr-2"></i> Chamar no WhatsApp
+                </a>
+            `;
+            options = ["Voltar ao início"];
+        }
         
         // SISTEMAS / APPS
         else if (lowerText.includes("sistema") || lowerText.includes("app") || lowerText.includes("saas") || lowerText.includes("dashboard")) {
             reply = "Entendido. Você precisa de robustez. Trabalhamos com React, Node, Python e SQL. Veja nossas soluções de Sistemas e SaaS:";
             showServiceCards(catalogo.sistemas);
-            // Adicionado "Falar no WhatsApp" aqui também
             options = ["Voltar ao início", "Falar no WhatsApp"];
         } 
+        else if (lowerText.includes("site") || lowerText.includes("loja") || lowerText.includes("landing") || lowerText.includes("web")) {
+            reply = "Perfeito. Para web, focamos em velocidade e conversão. Aqui estão nossas soluções rápidas:";
+            showServiceCards(catalogo.web);
+            options = ["Voltar ao início", "Falar no WhatsApp"];
+        }
         
         // AUTOMAÇÃO / IA (Lógica ajustada)
         else if (lowerText.includes("automa") || lowerText.includes("ia") || lowerText.includes("bot") || lowerText.includes("robô")) {
@@ -115,7 +124,7 @@ function processBotResponse(text) {
         // --- 3. OUTROS COMANDOS ---
 
         // PORTFÓLIO
-        else if (lowerText.includes("portfólio") || lowerText.includes("portfolio")) {
+        else if (lowerText.includes("portfólio") || lowerText.includes("portfolio") || lowerText.includes("projetos") || lowerText.includes("cases") || lowerText.includes("trabalhos")) {
             reply = `
                 Tenho orgulho do nosso trabalho! 🚀<br>
                 Você pode conferir nossos projetos recentes e estudos de caso no link abaixo:
