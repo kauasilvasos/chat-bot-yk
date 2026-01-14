@@ -169,25 +169,32 @@ function setQuickReplies(options) {
 }
 
 function showServiceCards(servicesList) {
-    // Atualiza o painel lateral (Desktop)
+    if (infoPanel) {
+        infoPanel.innerHTML = '<h3 class="text-green-400 font-bold mb-4 border-b border-gray-700 pb-2">Catálogo Selecionado:</h3>';
+    }
     infoPanel.innerHTML = '<h3 class="text-green-400 font-bold mb-4 border-b border-gray-700 pb-2">Catálogo Selecionado:</h3>';
     
-    // Cria cards dentro do chat também (Mobile/Desktop)
     const cardsContainer = document.createElement('div');
     cardsContainer.className = "grid gap-3 mt-2 mb-2";
 
     servicesList.forEach(item => {
         // Card HTML
         const cardHTML = `
-            <div class="bg-gray-900 border border-green-900/50 p-3 rounded hover:border-green-500 transition cursor-pointer group">
-                <div class="flex justify-between items-start">
-                    <h4 class="font-bold text-green-400 group-hover:text-white">${item.nome}</h4>
-                    <span class="text-xs bg-gray-800 px-2 py-1 rounded text-gray-400">${item.tempo}</span>
+            <div class="bg-gradient-to-br from-gray-800 to-gray-900 border border-white/5 p-4 rounded-xl hover:border-green-500/30 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-green-900/10">
+                <div class="flex justify-between items-start mb-2">
+                    <h4 class="font-bold text-white group-hover:text-green-400 transition-colors text-base">${item.nome}</h4>
+                    <span class="text-[10px] font-bold uppercase tracking-wider bg-black/30 border border-white/10 px-2 py-1 rounded text-green-400 shadow-inner">${item.tempo}</span>
                 </div>
-                <p class="text-xs text-blue-300 font-mono mt-1 mb-2">${item.tech}</p>
-                <p class="text-sm text-gray-300">${item.desc}</p>
-                <div class="mt-2 text-right">
-                    <span class="font-bold text-white bg-green-700 px-2 py-0.5 rounded text-sm">${item.preco}</span>
+                
+                <p class="text-xs text-blue-300/80 font-mono mb-3 flex items-center gap-1">
+                    <i class="fas fa-code text-[10px]"></i> ${item.tech}
+                </p>
+                
+                <p class="text-sm text-gray-400 leading-relaxed border-l-2 border-gray-700 pl-3 mb-3">${item.desc}</p>
+                
+                <div class="flex justify-between items-center mt-3 pt-3 border-t border-white/5">
+                    <span class="text-xs text-gray-500">Investimento a partir de:</span>
+                    <span class="font-bold text-green-300 text-lg drop-shadow-sm">${item.preco}</span>
                 </div>
             </div>
         `;
@@ -196,6 +203,11 @@ function showServiceCards(servicesList) {
         const chatCardWrapper = document.createElement('div');
         chatCardWrapper.innerHTML = cardHTML;
         cardsContainer.appendChild(chatCardWrapper);
+        if (infoPanel) {
+            const sideCard = document.createElement('div');
+            sideCard.innerHTML = cardHTML;
+            infoPanel.appendChild(sideCard);
+        }
 
         // Adiciona ao Painel Lateral
         const sideCard = document.createElement('div');
@@ -216,7 +228,9 @@ function showServiceCards(servicesList) {
 }
 
 function scrollToBottom() {
-    chatBox.scrollTop = chatBox.scrollHeight;
+    setTimeout(() => {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }, 50);
 }
 
 // Botão de reinício
@@ -224,3 +238,9 @@ document.getElementById('btn-restart').onclick = () => {
     chatBox.innerHTML = '';
     window.onload();
 };
+
+userInput.addEventListener('focus', () => {
+    setTimeout(() => {
+        scrollToBottom();
+    }, 300);
+});
