@@ -72,29 +72,49 @@ function processBotResponse(text) {
         removeTyping();
 
         // Lógica simples de decisão baseada em palavras-chave
-        if (lowerText.includes("site") || lowerText.includes("loja") || lowerText.includes("landing") || lowerText.includes("web")) {
+        if (lowerText.includes("quero um chatbot") || lowerText.includes("falar no whatsapp") || lowerText.includes("zap")) {
+            reply = `
+                Ótima decisão! Vamos automatizar seu atendimento. 🤖💬<br>
+                Chame nosso especialista agora mesmo para configurar seu Bot:
+                <br><br>
+                <a href="https://wa.me/5548985036092?text=Olá, quero um Chatbot para minha empresa." 
+                   target="_blank" 
+                   class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-transform hover:scale-105 shadow-md no-underline">
+                    <i class="fab fa-whatsapp mr-2"></i> Iniciar Conversa
+                </a>
+            `;
+            options = ["Voltar ao início"];
+        }
+
+        // --- 2. MENU DE SERVIÇOS ---
+
+        // SITE / WEB
+        else if (lowerText.includes("site") || lowerText.includes("loja") || lowerText.includes("landing") || lowerText.includes("web")) {
             reply = "Perfeito. Para web, focamos em velocidade e conversão. Aqui estão nossas soluções rápidas:";
             showServiceCards(catalogo.web);
+            // Adicionado "Falar no WhatsApp" conforme solicitado
             options = ["Voltar ao início", "Falar no WhatsApp"];
         } 
-        // 2. SISTEMAS / APPS
+        
+        // SISTEMAS / APPS
         else if (lowerText.includes("sistema") || lowerText.includes("app") || lowerText.includes("saas") || lowerText.includes("dashboard")) {
             reply = "Entendido. Você precisa de robustez. Trabalhamos com React, Node, Python e SQL. Veja nossas soluções de Sistemas e SaaS:";
             showServiceCards(catalogo.sistemas);
-            options = ["Voltar ao início", "Orçamento Customizado"];
+            // Adicionado "Falar no WhatsApp" aqui também
+            options = ["Voltar ao início", "Falar no WhatsApp"];
         } 
-        // 3. AUTOMAÇÃO / IA
+        
+        // AUTOMAÇÃO / IA (Lógica ajustada)
         else if (lowerText.includes("automa") || lowerText.includes("ia") || lowerText.includes("bot") || lowerText.includes("robô")) {
             reply = "Excelente escolha. Automação é o que gera lucro real. Aqui está o que meus 'irmãos' robôs podem fazer por você:";
             showServiceCards(catalogo.automacao);
-            options = ["Quero um Chatbot", "Voltar ao início"];
+            // Agora temos a opção específica que leva ao link do Whats
+            options = ["Quero um Chatbot", "Falar no WhatsApp", "Voltar ao início"];
         }
-        // 4. PREÇO / VALOR
-        else if (lowerText.includes("preço") || lowerText.includes("valor") || lowerText.includes("quanto")) {
-            reply = "Nossos preços são ultra competitivos para entrega High-End. Landing Pages a partir de R$350 e Sistemas a partir de R$2k. Selecione uma categoria acima para ver detalhes.";
-            options = ["Ver Sites", "Ver Sistemas", "Ver Automação"];
-        }
-        // 5. NOVO: PORTFÓLIO (Correção solicitada)
+        
+        // --- 3. OUTROS COMANDOS ---
+
+        // PORTFÓLIO
         else if (lowerText.includes("portfólio") || lowerText.includes("portfolio")) {
             reply = `
                 Tenho orgulho do nosso trabalho! 🚀<br>
@@ -108,7 +128,14 @@ function processBotResponse(text) {
             `;
             options = ["Voltar ao início", "Falar no WhatsApp"];
         }
-        // 6. NOVO: ORÇAMENTO (Para não cair no erro quando clicar no botão)
+
+        // PREÇO / VALOR
+        else if (lowerText.includes("preço") || lowerText.includes("valor") || lowerText.includes("quanto")) {
+            reply = "Nossos preços são ultra competitivos. Landing Pages a partir de R$350 e Sistemas a partir de R$2k. Selecione uma categoria:";
+            options = ["Ver Sites", "Ver Sistemas", "Ver Automação"];
+        }
+
+        // ORÇAMENTO
         else if (lowerText.includes("orçamento")) {
             reply = `
                 Para orçamentos personalizados, precisamos entender a fundo sua ideia. 💡<br>
@@ -122,11 +149,14 @@ function processBotResponse(text) {
             `;
             options = ["Voltar ao início"];
         }
-        // 7. VOLTAR / INÍCIO
+
+        // VOLTAR / INÍCIO
         else if (lowerText.includes("voltar") || lowerText.includes("inicio")) {
             reply = "Reiniciando... O que você busca hoje?";
             options = ["Quero um Site/Loja", "Sistema/App Complexo", "Automação & I.A.", "Ver Portfólio"];
         }
+        
+        // RESPOSTA PADRÃO (HUMAN HANDOFF)
         else {
             reply = `
                 Isso sai um pouco da minha programação padrão. 😅<br>
